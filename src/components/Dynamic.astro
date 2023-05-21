@@ -14,32 +14,13 @@ console.log("timeout", timeout);
         // Read the props from the data attribute.
         const component = this.dataset.component;
         const timeout = this.dataset.timeout ?? 0;
-        const rand = Math.random();
+
         setTimeout(() => {
             fetch(`/api/component?component=${component}`)
                 .then(response => response.text())
                 .then(htmlContent => {
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(htmlContent, 'text/html');
-
-                    /*
-                    // Check if the style tag already exists in the page and contains the desired styles
-                    const existingStyleTag = document.querySelector('style');
-                    const styleTagContent = 'astro-island,astro-slot{display:contents}';
-
-                    if (existingStyleTag && existingStyleTag.textContent.trim() === styleTagContent) {
-                        // If the style tag already exists and contains the desired styles, remove it from the fetched HTML content
-                        const styleElement = doc.querySelector('style');
-                        if (styleElement && styleElement.textContent.trim() === styleTagContent) {
-                           styleElement.parentNode.removeChild(styleElement);
-                        }
-                    } else {
-                        // If the style tag doesn't exist or doesn't contain the desired styles, add it to the head
-                        const newStyleElement = document.createElement('style');
-                        newStyleElement.textContent = styleTagContent;
-                        document.head.appendChild(newStyleElement);
-                    }
-                    */
 
                     // Extract the script tag
                     const scriptElement = doc.querySelector('script');
