@@ -14,5 +14,6 @@ export const prerender = true;
         <Dynamic component="Card" timeout={5000} />
         <Dynamic component="Counter" timeout={3000} />
         <Dynamic component="AstroHeart" timeout={10000} />
+        <div hx-get="/api/component?component=Counter" hx-trigger="click" hx-swap="outerHTML" hx-target="this">Hey there</div>
     </main>
 </Layout>

@@ -2,15 +2,18 @@
 const { component, timeout } = Astro.props;
 console.log("component", component);
 console.log("timeout", timeout);
+
+const fetchUrl = `/api/component?component=${component}`;
 ---
-<dynamic-astro id={component} data-timeout={timeout} data-component={component}>
+<dynamic-astro id={component} data-timeout={timeout} data-component={component}
+    hx-get={fetchUrl} hx-trigger="load" hx-swap="outerHTML" hx-target="this">
     <div>Loading...</div>
 </dynamic-astro>
 <script>
     class DynamicAstro extends HTMLElement {
       constructor() {
         super();
-  
+  /*
         // Read the props from the data attribute.
         const component = this.dataset.component;
         const timeout = this.dataset.timeout ?? 0;
@@ -25,8 +28,8 @@ console.log("timeout", timeout);
                     console.error('Error:', error);
                 })
             }, Number(timeout))
+            */
       }
     }
-  
     customElements.define('dynamic-astro', DynamicAstro);
   </script>
