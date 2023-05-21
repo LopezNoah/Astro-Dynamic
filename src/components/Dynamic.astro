@@ -18,10 +18,49 @@ console.log("timeout", timeout);
         setTimeout(() => {
             fetch(`/api/component?component=${component}`)
                 .then(response => response.text())
-                .then(data => {   
-                    this.innerHTML = data;
-                })
-                .catch(error => {
+                .then(htmlContent => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+
+                    /*
+                    // Check if the style tag already exists in the page and contains the desired styles
+                    const existingStyleTag = document.querySelector('style');
+                    const styleTagContent = 'astro-island,astro-slot{display:contents}';
+
+                    if (existingStyleTag && existingStyleTag.textContent.trim() === styleTagContent) {
+                        // If the style tag already exists and contains the desired styles, remove it from the fetched HTML content
+                        const styleElement = doc.querySelector('style');
+                        if (styleElement && styleElement.textContent.trim() === styleTagContent) {
+                           styleElement.parentNode.removeChild(styleElement);
+                        }
+                    } else {
+                        // If the style tag doesn't exist or doesn't contain the desired styles, add it to the head
+                        const newStyleElement = document.createElement('style');
+                        newStyleElement.textContent = styleTagContent;
+                        document.head.appendChild(newStyleElement);
+                    }
+                    */
+
+                    // Extract the script tag
+                    const scriptElement = doc.querySelector('script');
+                    if (scriptElement
+                        && scriptElement.textContent?.trim() !== ''
+                        && scriptElement.type !== 'module') {
+                        // Create a new script element
+                        const newScriptElement = document.createElement('script');
+                        newScriptElement.textContent = scriptElement.textContent;
+
+                        // Remove the script tag from the content
+                        scriptElement.parentNode?.removeChild(scriptElement);
+
+                        // Append the new script element to the head
+                        document.head.appendChild(newScriptElement);
+                    }
+
+                    // Get the updated HTML content without the script tag
+                    const updatedHTMLContent = doc.documentElement.outerHTML;
+                    this.innerHTML = updatedHTMLContent;
+                }).catch(error => {
                     console.error('Error:', error);
                 })
             }, Number(timeout))
@@ -29,4 +68,4 @@ console.log("timeout", timeout);
     }
   
     customElements.define('dynamic-astro', DynamicAstro);
-  </script>
+</script>
