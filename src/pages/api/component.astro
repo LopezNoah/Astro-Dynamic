@@ -1,6 +1,7 @@
 ---
 import AstroHeart from "../../components/AstroHeart.astro";
 import Card from "../../components/Card.astro"
+import Counter from "../../components/counter";
 
 const url = Astro.url;
 const component = url.searchParams.get("component");
@@ -16,9 +17,8 @@ Astro.response.headers.set("Content-Type", "text/html; charset=utf-8");
 Astro.response.headers.set("Cache-Control", "max-age=10, stale-while-revalidate=59");
 ---
 
-{component == 'AstroHeart' ?
- (<AstroHeart />) : 
- component == 'Card' ?
- (<Card title="hey there" body="hello world" href="/"/>) : 
+{component === 'AstroHeart' ? (<AstroHeart />) : 
+ component === 'Card' ? (<Card title="hey there" body="hello world" href="/"/>) : 
+ component === 'Counter' ? (<Counter client:load />) :
  (<div>Nothing to be found</div>)
 }
