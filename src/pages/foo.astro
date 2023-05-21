@@ -1,0 +1,17 @@
+---
+import AstroHeart from "../components/AstroHeart.astro";
+import Layout from "../layouts/Layout.astro";
+import Dynamic from "../components/Dynamic.astro";
+
+export const prerender = true;
+---
+
+<Layout title="Welcome to Astro.">
+	<main>
+        <AstroHeart />
+        <Dynamic component="AstroHeart" timeout={1000} />
+        <Dynamic component="AstroHeart" timeout={0} />
+        <Dynamic component="Card" timeout={5000} />
+        <Dynamic component="AstroHeart" timeout={10000} />
+    </main>
+</Layout>
